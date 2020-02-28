@@ -1,0 +1,12 @@
+import numpy as np
+
+lengths = np.array([.41,.46,.51,.56,.61])
+
+def period(a):
+    periods = [0]*len(a)
+    for i in range(len(a)):
+        p = 2*np.pi*np.sqrt(a[i]/9.81)
+        periods[i] = p
+    return periods
+
+print(period(lengths))
