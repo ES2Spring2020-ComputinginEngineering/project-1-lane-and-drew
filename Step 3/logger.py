@@ -15,13 +15,13 @@ radio.send('start') # Send the word 'start' to start the receiver
 mb.sleep(1000)
 mb.display.show(mb.Image.HEART)  # Display Heart while logging
 
+
 # Read and send accelerometer data repeatedly until button A is pressed again
-time = 0
 while not mb.button_a.is_pressed():
+    time = str(mb.running_time())
     xaccel = str(mb.accelerometer.get_x())
     yaccel = str(mb.accelerometer.get_y())
     zaccel = str(mb.accelerometer.get_z())
-    radio.send(xaccel + "," + yaccel + "," + zaccel + "," + str(time))
+    radio.send(time + "," + xaccel + "," + yaccel + "," + zaccel)
     mb.sleep(10)
-    time +=.01
-    print(xaccel+" "+yaccel+" "+zaccel+" "+str(time))
+    print(xaccel+" "+yaccel+" "+zaccel+" "+ time)
