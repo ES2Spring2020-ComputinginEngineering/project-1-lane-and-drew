@@ -12,143 +12,45 @@ fin41 = open("41data.txt", "r")
 fin31 = open("31data.txt", "r")
 
 
-lengths = np.array([.71,.61,.51,.41,.31])
+#lengths = np.array([.71,.61,.51,.41,.31])
+#
+#def period(a):
+#    periods = [0]*len(a)
+#    for i in range(len(a)):
+#        p = 2*np.pi*np.sqrt(a[i]/9.81)
+#        periods[i] = p
+#    return periods
+#print(period(lengths))
 
-def period(a):
-    periods = [0]*len(a)
-    for i in range(len(a)):
-        p = 2*np.pi*np.sqrt(a[i]/9.81)
-        periods[i] = p
-    return periods
-print(period(lengths))
+def make_tuple(a):
+    list_ln = np.zeros((1,4))
+    tupleLengtha = np.zeros((0,4))
+    for ln in a:
+        ln = ln.strip().strip(",").strip("()").split(", ")
+        list_ln[0,:] = [int(ln[0]),int(ln[1]),int(ln[2]), int(ln[3])]
+        tupleLengtha = np.append(tupleLengtha,list_ln, axis=0)    
+    return tupleLengtha
 
-timearray71 = np.array([])
-xarray71 = np.array([])
-yarray71 = np.array([])
-zarray71 = np.array([])
+def plot_tuple(a,b):
+    plt.plot(a[:,0],a[:,1])
+    plt.plot(a[:,0],a[:,2])
+    plt.plot(a[:,0],a[:,3])
+    plt.xlabel("Time (milliseconds)")
+    plt.ylabel("Acceleration (micro-gs) ")
+    plt.title("Pendulum Length " + str(b))
+    plt.show()
 
-timearray61 = np.array([])
-xarray61 = np.array([])
-yarray61 = np.array([])
-zarray61 = np.array([])
+tupleLength71 = make_tuple(fin71)
+plot_tuple(tupleLength71, 71)
 
-timearray51 = np.array([])
-xarray51 = np.array([])
-yarray51 = np.array([])
-zarray51 = np.array([])
+tupleLength61 = make_tuple(fin61)
+plot_tuple(tupleLength61, 61)
 
-timearray41 = np.array([])
-xarray41 = np.array([])
-yarray41 = np.array([])
-zarray41 = np.array([])
+tupleLength51 = make_tuple(fin51)
+plot_tuple(tupleLength51, 51)
 
-timearray31 = np.array([])
-xarray31 = np.array([])
-yarray31 = np.array([])
-zarray31 = np.array([])
+tupleLength41 = make_tuple(fin41)
+plot_tuple(tupleLength41, 41)
 
-tupleLength31 =[]
-for ln in fin31:
-    tupleLength31 = np.append(tupleLength31,fin31.readline())
-
-tupleLength41= []
-for ln in fin41:
-    tupleLength41 = np.append(tupleLength41,fin41.readline())
-    
-tupleLength51= []
-for ln in fin51:
-    tupleLength51 = np.append(tupleLength51,fin51.readline())
-    
-tupleLength61 = []
-for ln in fin61:
-    tupleLength61 = np.append(tupleLength61,fin61.readline())
-    
-tupleLength71 =[]
-for ln in fin71:
-    tupleLength71 = np.append(tupleLength71,fin71.readline())
-    
-    
-for j in range(len(tupleLength71)-1):
-    timearray71 = np.append(timearray71,tupleLength71[j][0])
-    xarray71 = np.append(xarray71, tupleLength71[j][1])
-    yarray71 = np.append(yarray71, tupleLength71[j][2])
-    zarray71 = np.append(zarray71, tupleLength71[j][3])
-
-for i in range(len(timearray71)-1):
-    plt.scatter(timearray71[i],xarray71[i])
-    plt.scatter(timearray71[i],yarray71[i])
-    plt.scatter(timearray71[i],zarray71[i])
-plt.xlabel("Time")
-plt.ylabel("Acceleration")
-plt.title("Pendulum Length 71cm")
-plt.yticks([-500,0,500])
-plt.xticks([24000,31000])
-plt.show()
-
-for j in range(len(tupleLength61)-1):
-    timearray61 = np.append(timearray61, tupleLength61[j][0])
-    xarray61 = np.append(xarray61, tupleLength61[j][1])
-    yarray61 = np.append(yarray61, tupleLength61[j][2])
-    zarray61 = np.append(zarray61, tupleLength61[j][3])
-
-for i in range(len(timearray61)-1):
-    plt.scatter(timearray61[i],xarray61[i])
-    plt.scatter(timearray61[i],yarray61[i])
-    plt.scatter(timearray61[i],zarray61[i])
-plt.xlabel("Time")
-plt.ylabel("Acceleration")
-plt.title("Pendulum Length 61cm")
-plt.yticks([-2000,0,300])
-plt.xticks([17000,25000])
-plt.show()
-
-for j in range(len(tupleLength51)-1):
-    timearray51 = np.append(timearray51, tupleLength51[j][0])
-    xarray51 = np.append(xarray51, tupleLength51[j][1])
-    yarray51 = np.append(yarray51, tupleLength51[j][2])
-    zarray51 = np.append(zarray51, tupleLength51[j][3])
-
-for i in range(len(timearray51)-1):
-    plt.scatter(timearray51[i],xarray51[i])
-    plt.scatter(timearray51[i],yarray51[i])
-    plt.scatter(timearray51[i],zarray51[i])
-plt.xlabel("Time")
-plt.ylabel("Acceleration")
-plt.title("Pendulum Length 51cm")
-plt.yticks([-2000,0,300])
-plt.xticks([17000,22000])
-plt.show()
-
-for j in range(len(tupleLength41)-1):
-    timearray41 = np.append(timearray41, tupleLength41[j][0])
-    xarray41 = np.append(xarray41, tupleLength41[j][1])
-    yarray41 = np.append(yarray41, tupleLength41[j][2])
-    zarray41 = np.append(zarray41, tupleLength41[j][3])
-
-for i in range(len(timearray41)-1):
-    plt.scatter(timearray41[i],xarray41[i])
-    plt.scatter(timearray41[i],yarray41[i])
-    plt.scatter(timearray41[i],zarray41[i])
-plt.xlabel("Time")
-plt.ylabel("Acceleration")
-plt.title("Pendulum Length 41cm")
-plt.yticks([-2000,0,300])
-plt.xticks([21000,27000])
-plt.show()
-
-for j in range(len(tupleLength31)-1):
-    timearray31 = np.append(timearray31, tupleLength31[j][0])
-    xarray31 = np.append(xarray31, tupleLength31[j][1])
-    yarray31 = np.append(yarray31, tupleLength31[j][2])
-    zarray31 = np.append(zarray31, tupleLength31[j][3])
-
-for i in range(len(timearray31)-1):
-    plt.scatter(timearray31[i],xarray31[i])
-    plt.scatter(timearray31[i],yarray31[i])
-    plt.scatter(timearray31[i],zarray31[i])
-plt.xlabel("Time")
-plt.ylabel("Acceleration")
-plt.title("Pendulum Length 31cm")
-plt.yticks([-2000,0,300])
-plt.xticks([10000,16000])
-plt.show()
+tupleLength31 = make_tuple(fin31)
+plot_tuple(tupleLength31, 31)
