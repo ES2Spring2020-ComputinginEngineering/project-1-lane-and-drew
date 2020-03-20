@@ -11,46 +11,87 @@ fin51 = open("51data.txt", "r")
 fin41 = open("41data.txt", "r")
 fin31 = open("31data.txt", "r")
 
+lengths = np.array([.71,.61,.51,.41,.31])
 
-#lengths = np.array([.71,.61,.51,.41,.31])
-#
-#def period(a):
-#    periods = [0]*len(a)
-#    for i in range(len(a)):
-#        p = 2*np.pi*np.sqrt(a[i]/9.81)
-#        periods[i] = p
-#    return periods
-#print(period(lengths))
+def period(a):
+    periods = [0]*len(a)
+    for i in range(len(a)):
+        periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
+    return periods
+print(period(lengths))
 
 def make_tuple(a):
-    list_ln = np.zeros((1,4))
-    tupleLengtha = np.zeros((0,4))
+    list_ln = np.zeros((1,5))
+    tupleLengtha = np.zeros((0,5))
     for ln in a:
         ln = ln.strip().strip(",").strip("()").split(", ")
-        list_ln[0,:] = [int(ln[0]),int(ln[1]),int(ln[2]), int(ln[3])]
+        list_ln[0,:] = [int(ln[0]),int(ln[1]),int(ln[2]), int(ln[3]), 0]
         tupleLengtha = np.append(tupleLengtha,list_ln, axis=0)    
     return tupleLengtha
 
-def plot_tuple(a,b):
+def plot_tuple_acc(a,b):
     plt.plot(a[:,0],a[:,1])
     plt.plot(a[:,0],a[:,2])
     plt.plot(a[:,0],a[:,3])
     plt.xlabel("Time (milliseconds)")
-    plt.ylabel("Acceleration (micro-gs) ")
+    plt.ylabel("Acceleration (milli-gs) ")
     plt.title("Pendulum Length " + str(b))
     plt.show()
 
+def plot_tuple_theta(a,b):
+    plt.plot(a[:,0],a[:,4])
+    plt.xlabel("Time (milliseconds)")
+    plt.ylabel("Theta (degrees) ")
+    plt.title("Pendulum Length " + str(b))
+    plt.show()
+    
+def calc_theta(array,length):
+    for i in range(len(array)):
+        x = int(array[i][1])+1232
+        thetarad = np.arcsin((3.1415/9.81)*x/1000)
+        thetadeg = 180*thetarad/3.1415
+        array[i][4] = thetadeg
+
+def calc_period(array):
+    prevtime = array[0][0]
+    for i in range(0,len(array)-1):
+        prevtheta = array[i][4]
+        currtheta = array[i+1][4]
+        if (prevtheta<0 and currtheta>0):
+            currtime = (array[i][0]+array[i+1][0])/2
+            period = 2*(currtime-prevtime)/1000
+            prevtime = currtime
+            print (period)
+    print("ignore first result because the data does not neccessarily begin at the start of a peroiod")
+    return period
+
+
 tupleLength71 = make_tuple(fin71)
-plot_tuple(tupleLength71, 71)
+calc_theta(tupleLength71, 71)
+calc_period(tupleLength71) 
+plot_tuple_acc(tupleLength71, 71)
+plot_tuple_theta(tupleLength71,71)
 
 tupleLength61 = make_tuple(fin61)
-plot_tuple(tupleLength61, 61)
+calc_theta(tupleLength61, 61)
+calc_period(tupleLength61) 
+plot_tuple_acc(tupleLength61, 61)
+plot_tuple_theta(tupleLength61,61)
 
 tupleLength51 = make_tuple(fin51)
-plot_tuple(tupleLength51, 51)
+calc_theta(tupleLength51, 51)
+calc_period(tupleLength51) 
+plot_tuple_acc(tupleLength51, 51)
+plot_tuple_theta(tupleLength51,51)
 
 tupleLength41 = make_tuple(fin41)
-plot_tuple(tupleLength41, 41)
+calc_theta(tupleLength41, 41)
+calc_period(tupleLength41) 
+plot_tuple_acc(tupleLength41, 41)
+plot_tuple_theta(tupleLength41,41)
 
 tupleLength31 = make_tuple(fin31)
-plot_tuple(tupleLength31, 31)
+calc_theta(tupleLength31, 31)
+calc_period(tupleLength31) 
+plot_tuple_acc(tupleLength31, 31)
+plot_tuple_theta(tupleLength31,31)
