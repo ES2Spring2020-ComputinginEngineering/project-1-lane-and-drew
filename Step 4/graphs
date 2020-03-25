@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import scipy.signal as sig
 
 path="/Users/drewmacklin/Documents/GitHub/project-1-lane-and-drew"
 os.chdir(path)
@@ -18,6 +19,7 @@ def period(a):
     for i in range(len(a)):
         periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
     return periods
+print("Theoretical periods for pendulums length 71, 61, 51, 41, 31 cm respectively ", end ="")
 print(period(lengths))
 
 def make_tuple(a):
@@ -29,15 +31,6 @@ def make_tuple(a):
         tupleLengtha = np.append(tupleLengtha,list_ln, axis=0)    
     return tupleLengtha
 
-def plot_tuple_acc(a,b):
-    plt.plot(a[:,0],a[:,1])
-    plt.plot(a[:,0],a[:,2])
-    plt.plot(a[:,0],a[:,3])
-    plt.xlabel("Time (milliseconds)")
-    plt.ylabel("Acceleration (milli-gs) ")
-    plt.title("Pendulum Length " + str(b))
-    plt.show()
-
 def plot_tuple_theta(a,b):
     plt.plot(a[:,0],a[:,4])
     plt.xlabel("Time (milliseconds)")
@@ -45,53 +38,54 @@ def plot_tuple_theta(a,b):
     plt.title("Pendulum Length " + str(b))
     plt.show()
     
-def calc_theta(array,length):
-    for i in range(len(array)):
-        x = int(array[i][1])+1232
+def calc_theta(a,length):
+    for i in range(len(a)):
+        x = int(a[i][1])+1232
         thetarad = np.arcsin((3.1415/9.81)*x/1000)
         thetadeg = 180*thetarad/3.1415
-        array[i][4] = thetadeg
+        a[i][4] = thetadeg
 
-def calc_period(array):
-    prevtime = array[0][0]
-    for i in range(0,len(array)-1):
-        prevtheta = array[i][4]
-        currtheta = array[i+1][4]
-        if (prevtheta<0 and currtheta>0):
-            currtime = (array[i][0]+array[i+1][0])/2
-            period = 2*(currtime-prevtime)/1000
-            prevtime = currtime
-            print (period)
-    print("ignore first result because the data does not neccessarily begin at the start of a peroiod")
-    return period
-
+def smoothed_period(a,b):
+    time = a[:,0]
+    x = a[:,1]
+    x_filt = sig.medfilt(x)
+    x_filt_pks, _ = sig.find_peaks(x_filt)
+    plt.plot(time, x, time[x_filt_pks], x_filt[x_filt_pks], 'r.')
+    plt.plot(a[:,0],a[:,2])
+    plt.plot(a[:,0],a[:,3])
+    plt.xlabel("Time (milliseconds)")
+    plt.ylabel("Acceleration (milli-gs) ")
+    plt.title("Pendulum Length " + str(b))
+    plt.show()
+    prev = 0
+    print("periods of pendulum length " + str(b))
+    print("ignore first result because the data does not neccessarily begin at the start of a period")
+    for i in range(len(time[x_filt_pks])):
+        period = (time[x_filt_pks][i] - prev)/500
+        prev = time[x_filt_pks][i]
+        print(period)
 
 tupleLength71 = make_tuple(fin71)
-calc_theta(tupleLength71, 71)
-calc_period(tupleLength71) 
-plot_tuple_acc(tupleLength71, 71)
+calc_theta(tupleLength71, 71) 
 plot_tuple_theta(tupleLength71,71)
+smoothed_period(tupleLength71,71)
 
 tupleLength61 = make_tuple(fin61)
 calc_theta(tupleLength61, 61)
-calc_period(tupleLength61) 
-plot_tuple_acc(tupleLength61, 61)
 plot_tuple_theta(tupleLength61,61)
+smoothed_period(tupleLength61, 61)
 
 tupleLength51 = make_tuple(fin51)
 calc_theta(tupleLength51, 51)
-calc_period(tupleLength51) 
-plot_tuple_acc(tupleLength51, 51)
 plot_tuple_theta(tupleLength51,51)
+smoothed_period(tupleLength51, 51)
 
 tupleLength41 = make_tuple(fin41)
 calc_theta(tupleLength41, 41)
-calc_period(tupleLength41) 
-plot_tuple_acc(tupleLength41, 41)
 plot_tuple_theta(tupleLength41,41)
+smoothed_period(tupleLength41, 41)
 
 tupleLength31 = make_tuple(fin31)
 calc_theta(tupleLength31, 31)
-calc_period(tupleLength31) 
-plot_tuple_acc(tupleLength31, 31)
 plot_tuple_theta(tupleLength31,31)
+smoothed_period(tupleLength31, 31)
