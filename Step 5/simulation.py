@@ -34,6 +34,13 @@ def plot(posNext,velNext,accNext,length):
         accx = np.append(accx,length*(-np.sin(posNext)*(velNext**2)+np.cos(posNext)*accNext))
         t = np.append(t,time[i])
         i += 1
+    prev = 0
+    for i in range(0,len(posx)-1):
+        if(posx[i]<0 and posx[i+1]>0):
+            period = time[i] - prev
+            prev = time[i]
+    print("Pendulum period " + str(period))
+            
     plt.xlabel("Time (seconds)")
     plt.ylabel("X position (meters)")
     plt.title("Pendulum Length " + str(length))
@@ -51,6 +58,7 @@ def plot(posNext,velNext,accNext,length):
     plt.title("Pendulum Length " + str(length))
     plt.plot(t,accx)
     plt.show()
+    
     
 length71 = init(0,10)
 plot(length71[0],length71[1],length71[2],length71[3])
