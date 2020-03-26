@@ -1,20 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 
-lengths = np.linspace(0,10,10000)
+lengths = np.linspace(0,10,10000) #list of all numbers between zero and 10
 
-def period(a):
+def period(a): #same as theoretical period code
     periods = [0]*len(a)
     for i in range(len(a)):
         periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
     return periods
 
-def plot(a,b):
+def plot(a,b): #takes in two arrays
     plt.xlabel("Length (meters)")
     plt.ylabel("Period (seconds)")
     plt.title("Period vs Length")
-    plt.plot(a,b)
+    plt.plot(a,b) #plots array a vs array b
     plt.show()
    
-periods = period(lengths)
-plot(lengths,periods)
+periods = period(lengths) #creates an array of the periods of the pendulums of lengths 0-10
+plot(lengths,periods) #plots the periods vs their lengths
