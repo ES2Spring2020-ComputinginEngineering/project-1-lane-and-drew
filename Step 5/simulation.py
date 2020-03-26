@@ -58,8 +58,7 @@ def plot(posNext,velNext,accNext,length):
     plt.title("Pendulum Length " + str(length))
     plt.plot(t,accx)
     plt.show()
-    
-    
+ 
 length71 = init(0,10)
 plot(length71[0],length71[1],length71[2],length71[3])
 length71 = init(0,3/2)
