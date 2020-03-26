@@ -1,8 +1,7 @@
 import microbit as mb
-import radio  # Needs to be imported separately
+import radio 
 
-# Change the channel if other microbits are interfering. (Default=7)
-radio.on()  # Turn on radio
+radio.on() 
 radio.config(channel=11, length =100)
 
 print('Program Started')
@@ -18,7 +17,7 @@ print('start')
 while True:
     incoming = radio.receive() # Read from radio
     if incoming is not None: # message was received
-        mb.display.show(mb.Image.HEART, delay=100, clear=True, wait=False)
-        data = tuple(int(info) for info in incoming.split(","))
-        print(data)
-        mb.sleep(10)
+        mb.display.show(mb.Image.HEART, delay=100, clear=True, wait=False) #display heart
+        data = tuple(int(info) for info in incoming.split(",")) #data is a tuple of the information received after into is converted to integers 
+        print(data) #prints the data to be copied and pasted into a text file
+        mb.sleep(10) #wait 1/100 of a second
