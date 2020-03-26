@@ -1,3 +1,4 @@
+#this code logs the x,y,z accelerations and time and send it to another microbit
 import microbit as mb
 import radio
 
