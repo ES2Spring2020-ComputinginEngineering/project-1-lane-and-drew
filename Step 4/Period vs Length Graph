@@ -1,0 +1,20 @@
+import numpy as np
+import matplotlib.pyplot as plt 
+
+lengths = np.linspace(0,10,10000)
+
+def period(a):
+    periods = [0]*len(a)
+    for i in range(len(a)):
+        periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
+    return periods
+
+def plot(a,b):
+    plt.xlabel("Length (meters)")
+    plt.ylabel("Period (seconds)")
+    plt.title("Period vs Length")
+    plt.plot(a,b)
+    plt.show()
+   
+periods = period(lengths)
+plot(periods,lengths)
