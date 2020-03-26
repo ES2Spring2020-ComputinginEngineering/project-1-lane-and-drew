@@ -1,9 +1,9 @@
-lengths = np.array([.71,.61,.51,.41,.31])
+lengths = np.array([.71,.61,.51,.41,.31]) #corralates to pendulum lengths 71 cm, 61 cm etc.
 
 def period(a):
-    periods = [0]*len(a)
-    for i in range(len(a)):
-        periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
-    return periods
+    periods = [0]*len(a) #creates array of zeros of length len(a)
+    for i in range(len(a)): #for each index of that array
+        periods[i] = 2*np.pi*np.sqrt(a[i]/9.81) #set the period array of that index equal to its period (see report for equation)
+    return periods #return the array of periods
 print("Theoretical periods for pendulums length 71, 61, 51, 41, 31 cm respectively ", end ="")
-print(period(lengths))
+print(period(lengths)) #print the array of periods
