@@ -1,0 +1,9 @@
+lengths = np.array([.71,.61,.51,.41,.31])
+
+def period(a):
+    periods = [0]*len(a)
+    for i in range(len(a)):
+        periods[i] = 2*np.pi*np.sqrt(a[i]/9.81)
+    return periods
+print("Theoretical periods for pendulums length 71, 61, 51, 41, 31 cm respectively ", end ="")
+print(period(lengths))
