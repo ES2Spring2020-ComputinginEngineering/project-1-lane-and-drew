@@ -17,4 +17,4 @@ def plot(a,b):
     plt.show()
    
 periods = period(lengths)
-plot(periods,lengths)
+plot(lengths,periods)
