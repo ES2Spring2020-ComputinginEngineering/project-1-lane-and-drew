@@ -1,3 +1,4 @@
+#this code receives the information from the logger microbit
 import microbit as mb
 import radio 
 
