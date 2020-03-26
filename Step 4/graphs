@@ -6,6 +6,7 @@ import scipy.signal as sig
 path="/Users/drewmacklin/Documents/GitHub/project-1-lane-and-drew"
 os.chdir(path)
 
+#reads in the data files
 fin71 = open("71data.txt", "r")
 fin61 = open("61data.txt", "r")
 fin51 = open("51data.txt", "r")
@@ -13,53 +14,53 @@ fin41 = open("41data.txt", "r")
 fin31 = open("31data.txt", "r")
 
 def make_tuple(a):
-    list_ln = np.zeros((1,5))
-    tupleLengtha = np.zeros((0,5))
-    for ln in a:
-        ln = ln.strip().strip(",").strip("()").split(", ")
-        list_ln[0,:] = [int(ln[0]),int(ln[1]),int(ln[2]), int(ln[3]), 0]
-        tupleLengtha = np.append(tupleLengtha,list_ln, axis=0)    
-    return tupleLengtha
+    list_ln = np.zeros((1,5)) #creates 1x5 array of zeros
+    tupleLengtha = np.zeros((0,5)) #creates empty array
+    for ln in a: #for every line
+        ln = ln.strip().strip(",").strip("()").split(", ") #strip the line down to just the numbers
+        list_ln[0,:] = [int(ln[0]),int(ln[1]),int(ln[2]), int(ln[3]), 0] #add the integers to an empty array 
+        tupleLengtha = np.append(tupleLengtha,list_ln, axis=0)    #append the array list_ln to an empty array
+    return tupleLengtha #return the array (tuples)
 
 def plot_tuple_theta(a,b):
-    plt.plot(a[:,0],a[:,4])
-    plt.xlabel("Time (milliseconds)")
+    plt.plot(a[:,0],a[:,4]) #plot the first tuple value in line i (time) vs the last value (theta)
+    plt.xlabel("Time (milliseconds)") #label the axis
     plt.ylabel("Theta (degrees) ")
-    plt.title("Pendulum Length " + str(b))
+    plt.title("Pendulum Length " + str(b)) #title
     plt.show()
     
 def calc_theta(a,length):
-    for i in range(len(a)):
-        x = int(a[i][1])+1232
-        thetarad = np.arcsin((3.1415/9.81)*x/1000)
-        thetadeg = 180*thetarad/3.1415
-        a[i][4] = thetadeg
+    for i in range(len(a)):#for every value in array a
+        x = int(a[i][1])+1232 #Microbit was miscalibrated. adding 1232 centered the graph at zero. X = the ith value plus 1232
+        thetarad = np.arcsin((3.1415/9.81)*x/1000) #the angle that the pendulum is at is arcsin(pi/g)x/1000 because x is in milligs (see report for calculations)
+        thetadeg = 180*thetarad/3.1415 #convert thetarad to degrees
+        a[i][4] = thetadeg #append this value to array a
 
 def smoothed_period(a,b):
-    time = a[:,0]
-    x = a[:,1]
-    x_filt = sig.medfilt(x)
-    x_filt_pks, _ = sig.find_peaks(x_filt)
-    plt.plot(time, x, time[x_filt_pks], x_filt[x_filt_pks], 'r.')
-    plt.plot(a[:,0],a[:,2])
-    plt.plot(a[:,0],a[:,3])
-    plt.xlabel("Time (milliseconds)")
+    time = a[:,0] #time = the first value in each line of a
+    x = a[:,1] #x = the second value in each line of a
+    x_filt = sig.medfilt(x) #smooth x
+    x_filt_pks, _ = sig.find_peaks(x_filt) #find x peaks
+    plt.plot(time, x, time[x_filt_pks], x_filt[x_filt_pks], 'r.') #plot these peaks over top of the graph of time vs x
+    plt.plot(a[:,0],a[:,2]) #plot y acceleration
+    plt.plot(a[:,0],a[:,3]) #plot z acceleration
+    plt.xlabel("Time (milliseconds)") #labe axis
     plt.ylabel("Acceleration (milli-gs) ")
     plt.title("Pendulum Length " + str(b))
     plt.show()
-    prev = 0
-    print("periods of pendulum length " + str(b))
+    prev = 0 #counter
+    print("periods of pendulum length " + str(b)) #print statements
     print("ignore first result because the data does not neccessarily begin at the start of a period")
-    for i in range(len(time[x_filt_pks])):
-        period = (time[x_filt_pks][i] - prev)/500
-        prev = time[x_filt_pks][i]
-        print(period)
+    for i in range(len(time[x_filt_pks])): #for each value where there is a peak
+        period = (time[x_filt_pks][i] - prev)/500 #record its time in seconds and subract the time of the previous peak
+        prev = time[x_filt_pks][i] #set the value of previous peak to value of current peak
+        print(period) #print the periods
 
-tupleLength71 = make_tuple(fin71)
-calc_theta(tupleLength71, 71) 
-plot_tuple_theta(tupleLength71,71)
-smoothed_period(tupleLength71,71)
-
+tupleLength71 = make_tuple(fin71) #make a tuple of the data in fin71
+calc_theta(tupleLength71, 71) #add the theta to the tuple
+plot_tuple_theta(tupleLength71,71) #plot the theta
+smoothed_period(tupleLength71,71) #print the periods and plot the accelerations
+                                   #repeat for all data sets
 tupleLength61 = make_tuple(fin61)
 calc_theta(tupleLength61, 61)
 plot_tuple_theta(tupleLength61,61)
