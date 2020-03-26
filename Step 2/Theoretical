@@ -1,3 +1,4 @@
+#this code calculates the theoretical period
 lengths = np.array([.71,.61,.51,.41,.31]) #corralates to pendulum lengths 71 cm, 61 cm etc.
 
 def period(a):
