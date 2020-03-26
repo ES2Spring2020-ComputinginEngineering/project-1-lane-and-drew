@@ -1,4 +1,5 @@
-import numpy as np
+#this code simulates a pendulum and graphs its position, velocity and acceleration over time as well as its period
+mport numpy as np
 import matplotlib.pyplot as plt 
 
 lengths=np.array([.71,.61,.51,.41,.31]) #array of pendulum lengths
