@@ -1,3 +1,4 @@
+#this code reads in data files, makes tuples, plots the x,y,z, and theta vs time and calculates period of smoothed data
 import numpy as np
 import matplotlib.pyplot as plt
 import os
